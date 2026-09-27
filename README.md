@@ -107,6 +107,8 @@ Outside an event loop, `create` is synchronous; inside an event loop, it returns
 
 Supported translation includes text, base64/native images and documents, canonical tools/results, output-token limits, stop sequences, reasoning enable/disable and effort, and JSON-schema response-format projection. Unsupported native sampling fields are omitted rather than forwarding deprecated `temperature` from auxiliary callers. Reasoning effort is clamped to native-supported levels, including Hermes minimal/ultra inputs. Native thinking deltas surface as `reasoning_content`. Model/service restrictions still apply.
 
+Pinned routes declare vision, so user images attach as native image parts and `vision_analyze` returns its image inside the tool result instead of calling `auxiliary.vision`. Only base64 images are sent; a remote `http(s)` image URL becomes a text hint to call `vision_analyze`. An explicit `auxiliary.vision`, `agent.image_input_mode: text` or `model.supports_vision: false` still routes through text.
+
 Unknown parameters fail explicitly. Unsupported surfaces include assistant prefill, strict function mode, forced tool choice, `parallel_tool_calls=False`, `n>1`, JSON-object-only mode, arbitrary headers/body fields, remote image downloads, and cross-model signed-history parity. The read-idle timeout defaults to 180 seconds, resets on native output, and accepts Hermes' finite HTTPX read-timeout shape. Large prompts remain subject to native/OS limits.
 
 ## Setup: `hermes model` → Claude Subscription DirectSDK (Experimental)
